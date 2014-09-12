@@ -1,0 +1,33 @@
+package Configs
+
+import "fmt"
+
+const (
+	company = "Base Server Structure"
+	version = "0.0.1"
+	// mysql, postgre or sqlite
+	dbase = "mysql"
+	// tcp(localhost:3306)
+	host     = "unix(/var/run/mysqld/mysqld.sock)"
+	user     = "root"
+	password = "pass"
+	database = "test_bss"
+)
+
+//Confs Structure
+type Config struct {
+}
+
+func (conf *Config) Connection() string {
+	return fmt.Sprintf(
+		"%s:%s@%s/%s?charset=utf8",
+		user,
+		password,
+		host,
+		database,
+	)
+}
+
+func (conf *Config) Dbase() string {
+	return dbase
+}
