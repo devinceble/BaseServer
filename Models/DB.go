@@ -13,6 +13,10 @@ type DB struct {
 //Mdb DB Variable
 var Mdb DB
 
+func init() {
+	Mdb.db, _ = Connect()
+}
+
 //Connect Method
 func Connect() (gorm.DB, error) {
 	var conf Configs.Config

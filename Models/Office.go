@@ -1,8 +1,11 @@
 package Models
 
-import "time"
+import (
+	"time"
+	"github.com/devinceble/BaseServer/Helpers"
+)
 
-//TODO: Link to COnstant Office From Organization Table
+//TODO: Link to Constant Office From Organization Table
 //TODO: Create Organization Table
 
 //Office Model
@@ -17,16 +20,23 @@ type Office struct {
 	Dlat int64
 }
 
-func init() {
-	Mdb.db, _ = Connect()
+//Find Office
+func (office *Office) Find(profile *Profile) ([]Office, error){
+	var offices []Office
+	err := Mdb.db.Model(profile).Related(&offices)
+	if err.Error != nil {
+		Helpers.BaseLog("DATABASE", "ERROR", "", "NO ENTRY", 1062, 3, err.Error)
+		return offices, err.Error
+	}
+	return offices, nil
 }
 
-//BeforeCreate Profile
+//BeforeCreate Office
 func (office *Office) BeforeCreate() {
 	office.Crat = time.Now().Unix()
 }
 
-//Migrate User
+//Migrate Office
 func (office *Office) Migrate() {
 	Mdb.db.DropTable(Office{})
 	Mdb.db.CreateTable(Office{})

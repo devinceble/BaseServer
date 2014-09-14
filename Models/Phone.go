@@ -1,6 +1,9 @@
 package Models
 
-import "time"
+import (
+	"time"
+	"github.com/devinceble/BaseServer/Helpers"
+)
 
 //TODO: GET Standard Phone Structure
 
@@ -15,17 +18,22 @@ type Phone struct {
 	Upat int64
 	Dlat int64
 }
-
-func init() {
-	Mdb.db, _ = Connect()
+//Find Phone
+func (phone *Phone) Find(profile *Profile) ([]Phone, error){
+	var phones []Phone
+	err := Mdb.db.Model(profile).Related(&phones)
+	if err.Error != nil {
+		Helpers.BaseLog("DATABASE", "ERROR", "", "NO ENTRY", 1062, 3, err.Error)
+		return phones, err.Error
+	}
+	return phones, nil
 }
-
-//BeforeCreate Profile
+//BeforeCreate Phone
 func (phone *Phone) BeforeCreate() {
 	phone.Crat = time.Now().Unix()
 }
 
-//Migrate User
+//Migrate Phone
 func (phone *Phone) Migrate() {
 	Mdb.db.DropTable(Phone{})
 	Mdb.db.CreateTable(Phone{})

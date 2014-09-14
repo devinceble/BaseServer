@@ -2,16 +2,16 @@ package Migrations
 
 import (
 	"github.com/devinceble/BaseServer/Helpers"
-	"github.com/devinceble/BaseServer/Models"
+	. "github.com/devinceble/BaseServer/Models"
 )
 
 func Migrate() {
-	var user Models.User
-	var profile Models.Profile
-	var address Models.Address
-	var office Models.Office
-	var email Models.Email
-	var phone Models.Phone
+	var user User
+	var profile Profile
+	var address Address
+	var office Office
+	var email Email
+	var phone Phone
 	Helpers.BaseLog("DATABASE", "SCHEMA", "", "PRODUCTION", 0, 0, nil)
 
 	Helpers.BaseLog("DATABASE", "TABLE", "", "USER", 1, 0, nil)

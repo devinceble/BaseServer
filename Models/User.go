@@ -2,7 +2,6 @@ package Models
 
 import (
 	"time"
-
 	"github.com/devinceble/BaseServer/Helpers"
 	"github.com/jameskeane/bcrypt"
 )
@@ -21,10 +20,6 @@ type User struct {
 	Profile Profile
 }
 
-func init() {
-	Mdb.db, _ = Connect()
-}
-
 //Create User
 func (user *User) Create() error {
 	salt, _ := bcrypt.Salt(10)
@@ -37,9 +32,36 @@ func (user *User) Create() error {
 	return nil
 }
 
+//Find UserById
+func (user *User) Find(Id int64) (*User, error){
+	err := Mdb.db.Select("id, username").First(user, Id)
+	if err.Error != nil {
+		Helpers.BaseLog("DATABASE", "ERROR", "", "NO ENTRY", 1062, 3, err.Error)
+		return user, err.Error
+	}
+	return user, nil
+}
+
+//Find UserAll
+func (user *User) FindAll() ([]User, error){
+	var users []User
+	err := Mdb.db.Find(&users)
+	if err.Error != nil {
+		Helpers.BaseLog("DATABASE", "ERROR", "", "NO ENTRY", 1062, 3, err.Error)
+		return users, err.Error
+	}
+	return users, nil
+}
+
+
 //BeforeCreate User
 func (user *User) BeforeCreate() {
 	user.Crat = time.Now().Unix()
+}
+
+//AfterFind User
+func (user *User) AfterFind() {
+	user.Profile.Find(user)
 }
 
 //Migrate User

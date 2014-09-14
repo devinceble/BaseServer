@@ -1,6 +1,9 @@
 package Models
 
-import "time"
+import (
+	"time"
+	"github.com/devinceble/BaseServer/Helpers"
+)
 
 //Address Model
 type Address struct {
@@ -20,12 +23,23 @@ type Address struct {
 	Dlat int64
 }
 
-//BeforeCreate Profile
+//Find Address
+func (address *Address) Find(profile *Profile) ([]Address, error){
+	var addresses []Address
+	err := Mdb.db.Model(profile).Related(&addresses)
+	if err.Error != nil {
+		Helpers.BaseLog("DATABASE", "ERROR", "", "NO ENTRY", 1062, 3, err.Error)
+		return addresses, err.Error
+	}
+	return addresses, nil
+}
+
+//BeforeCreate Address
 func (address *Address) BeforeCreate() {
 	address.Crat = time.Now().Unix()
 }
 
-//Migrate User
+//Migrate Address
 func (address *Address) Migrate() {
 	Mdb.db.DropTable(Address{})
 	Mdb.db.CreateTable(Address{})

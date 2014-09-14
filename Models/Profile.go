@@ -1,6 +1,9 @@
 package Models
 
-import "time"
+import (
+	"time"
+	"github.com/devinceble/BaseServer/Helpers"
+)
 
 //Profile Model
 type Profile struct {
@@ -21,8 +24,14 @@ type Profile struct {
 	Phone   []Phone
 }
 
-func init() {
-	Mdb.db, _ = Connect()
+//Find Profile
+func (profile *Profile) Find(user *User) (*Profile, error){
+	err := Mdb.db.Model(user).Related(profile)
+	if err.Error != nil {
+		Helpers.BaseLog("DATABASE", "ERROR", "", "NO ENTRY", 1062, 3, err.Error)
+		return profile, err.Error
+	}
+	return profile, nil
 }
 
 //BeforeCreate Profile
@@ -30,7 +39,23 @@ func (profile *Profile) BeforeCreate() {
 	profile.Crat = time.Now().Unix()
 }
 
-//Migrate User
+//AfterFind Profile
+func (profile *Profile) AfterFind() {
+	var address Address
+	addss, _ := address.Find(profile)
+	profile.Address = addss
+	var ofs Office
+	ofss, _ := ofs.Find(profile)
+	profile.Office = ofss
+	var eml Email
+	emls, _ := eml.Find(profile)
+	profile.Email = emls
+	var phn Phone
+	phns, _ := phn.Find(profile)
+	profile.Phone = phns
+}
+
+//Migrate Profile
 func (profile *Profile) Migrate() {
 	Mdb.db.DropTable(Profile{})
 	Mdb.db.CreateTable(Profile{})
