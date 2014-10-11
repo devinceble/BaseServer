@@ -1,0 +1,4 @@
+Client/
+Conf.go
+*.log
+.editorconfig
