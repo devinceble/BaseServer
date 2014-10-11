@@ -1,7 +1,22 @@
 #BaseServerStruct
+
+Version: *** v0.0.1b ***
+
 Base Server Structure for Client Web Applications
 
 My personal Starter Kit for Building Client Server for Web Application and PhaserJS Game
+
+--------
+###Change Log
+*** v0.0.1b Beta Release ***
+
+  * Routes
+  * Models
+  * Migrations
+  * Tests
+  * Sockets
+
+--------
 
 ### Building Dependencies and Structure
 
