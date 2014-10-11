@@ -2,6 +2,7 @@ package Models
 
 import (
 	"time"
+
 	"github.com/devinceble/BaseServer/Helpers"
 )
 
@@ -21,7 +22,7 @@ type Office struct {
 }
 
 //Find Office
-func (office *Office) Find(profile *Profile) ([]Office, error){
+func (office *Office) Find(profile *Profile) ([]Office, error) {
 	var offices []Office
 	err := Mdb.db.Model(profile).Related(&offices)
 	if err.Error != nil {

@@ -2,6 +2,7 @@ package Models
 
 import (
 	"time"
+
 	"github.com/devinceble/BaseServer/Helpers"
 )
 
@@ -24,7 +25,7 @@ type Address struct {
 }
 
 //Find Address
-func (address *Address) Find(profile *Profile) ([]Address, error){
+func (address *Address) Find(profile *Profile) ([]Address, error) {
 	var addresses []Address
 	err := Mdb.db.Model(profile).Related(&addresses)
 	if err.Error != nil {

@@ -2,6 +2,7 @@ package Models
 
 import (
 	"time"
+
 	"github.com/devinceble/BaseServer/Helpers"
 )
 
@@ -16,8 +17,9 @@ type Email struct {
 	Upat int64
 	Dlat int64
 }
+
 //Find Email
-func (email *Email) Find(profile *Profile) ([]Email, error){
+func (email *Email) Find(profile *Profile) ([]Email, error) {
 	var emails []Email
 	err := Mdb.db.Model(profile).Related(&emails)
 	if err.Error != nil {
@@ -26,6 +28,7 @@ func (email *Email) Find(profile *Profile) ([]Email, error){
 	}
 	return emails, nil
 }
+
 //BeforeCreate Email
 func (email *Email) BeforeCreate() {
 	email.Crat = time.Now().Unix()

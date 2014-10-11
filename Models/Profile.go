@@ -2,6 +2,7 @@ package Models
 
 import (
 	"time"
+
 	"github.com/devinceble/BaseServer/Helpers"
 )
 
@@ -25,7 +26,7 @@ type Profile struct {
 }
 
 //Find Profile
-func (profile *Profile) Find(user *User) (*Profile, error){
+func (profile *Profile) Find(user *User) (*Profile, error) {
 	err := Mdb.db.Model(user).Related(profile)
 	if err.Error != nil {
 		Helpers.BaseLog("DATABASE", "ERROR", "", "NO ENTRY", 1062, 3, err.Error)

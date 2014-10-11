@@ -2,6 +2,7 @@ package Models
 
 import (
 	"time"
+
 	"github.com/devinceble/BaseServer/Helpers"
 	"github.com/jameskeane/bcrypt"
 )
@@ -33,7 +34,7 @@ func (user *User) Create() error {
 }
 
 //Find UserById
-func (user *User) Find(Id int64) (*User, error){
+func (user *User) Find(Id int64) (*User, error) {
 	err := Mdb.db.Select("id, username").First(user, Id)
 	if err.Error != nil {
 		Helpers.BaseLog("DATABASE", "ERROR", "", "NO ENTRY", 1062, 3, err.Error)
@@ -43,7 +44,7 @@ func (user *User) Find(Id int64) (*User, error){
 }
 
 //Find UserAll
-func (user *User) FindAll() ([]User, error){
+func (user *User) FindAll() ([]User, error) {
 	var users []User
 	err := Mdb.db.Find(&users)
 	if err.Error != nil {
@@ -52,7 +53,6 @@ func (user *User) FindAll() ([]User, error){
 	}
 	return users, nil
 }
-
 
 //BeforeCreate User
 func (user *User) BeforeCreate() {

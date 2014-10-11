@@ -2,6 +2,7 @@ package Models
 
 import (
 	"time"
+
 	"github.com/devinceble/BaseServer/Helpers"
 )
 
@@ -18,8 +19,9 @@ type Phone struct {
 	Upat int64
 	Dlat int64
 }
+
 //Find Phone
-func (phone *Phone) Find(profile *Profile) ([]Phone, error){
+func (phone *Phone) Find(profile *Profile) ([]Phone, error) {
 	var phones []Phone
 	err := Mdb.db.Model(profile).Related(&phones)
 	if err.Error != nil {
@@ -28,6 +30,7 @@ func (phone *Phone) Find(profile *Profile) ([]Phone, error){
 	}
 	return phones, nil
 }
+
 //BeforeCreate Phone
 func (phone *Phone) BeforeCreate() {
 	phone.Crat = time.Now().Unix()
