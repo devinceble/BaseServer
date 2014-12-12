@@ -17,49 +17,12 @@ func Test_UserModel(t *testing.T) {
 		var email Email
 		var phone Phone
 
-		var user2 User
-		var profile2 Profile
-		var address2 Address
-		var office2 Office
-		var email2 Email
-		var phone2 Phone
-
 		user.Migrate()
 		profile.Migrate()
 		address.Migrate()
 		office.Migrate()
 		email.Migrate()
 		phone.Migrate()
-
-		profile2.FirstName = "Maria Del Rie"
-		profile2.LastName = "Marte"
-		profile2.MiddleName = "Sabana"
-
-		address2.Type = "Home"
-		address2.House = "01-78"
-		address2.Street = "Magsaysay"
-		address2.Barangay = "2"
-		address2.Zone = "1"
-		address2.City = "Malaybalay"
-		address2.Province = "Bukidnon"
-		address2.Zipcode = 8700
-
-		office2.Shortcode = "PG"
-		office2.Office = "Pryce Garden"
-
-		email2.Type = "Personal"
-		email2.Email = "mariadelrie@gmail.com"
-
-		phone2.Type = "Personal"
-		phone2.Phone = "+639180000001"
-
-		user2.Username = "mariadelrie"
-		user2.Password = "qwerty"
-		user2.Profile = profile2
-		user2.Profile.Address = []Address{address2}
-		user2.Profile.Office = []Office{office2}
-		user2.Profile.Email = []Email{email2}
-		user2.Profile.Phone = []Phone{phone2}
 
 		profile.FirstName = "Leivince John"
 		profile.LastName = "Marte"
@@ -102,9 +65,6 @@ func Test_UserModel(t *testing.T) {
 
 		err := user.Create()
 		So(err, ShouldBeNil)
-		err1 := user2.Create()
-		So(err1, ShouldBeNil)
-
 		So(user.Upat, ShouldBeZeroValue)
 		So(user.Dlat, ShouldBeZeroValue)
 
@@ -143,8 +103,7 @@ func Test_UserModel(t *testing.T) {
 			})
 		})
 		Convey("Finding User", func() {
-			var user User
-			var UserId int64 = 2
+			var UserId int64 = 1
 			user.Find(UserId)
 			So(user.Id, ShouldEqual, UserId)
 			Convey("Get User Profile", func() {
@@ -170,7 +129,6 @@ func Test_UserModel(t *testing.T) {
 		})
 
 		Convey("Find All User", func() {
-			var user User
 			users, _ := user.FindAll()
 			So(len(users), ShouldBeGreaterThan, 0)
 		})
