@@ -57,11 +57,6 @@ func Test_UserModel(t *testing.T) {
 
 		user.Username = "devinceble"
 		user.Password = "qwerty"
-		user.Profile = profile
-		user.Profile.Address = []Address{address}
-		user.Profile.Office = []Office{office}
-		user.Profile.Email = []Email{email}
-		user.Profile.Phone = []Phone{phone}
 
 		err := user.Create()
 		So(err, ShouldBeNil)
@@ -69,81 +64,101 @@ func Test_UserModel(t *testing.T) {
 		So(user.Dlat, ShouldBeZeroValue)
 
 		Convey("User Profile", func() {
+			user.Profile = profile
+			err := user.Update()
+			So(err, ShouldBeNil)
 			So(user.Id, ShouldEqual, user.Profile.UserId)
 			So(user.Profile.Crat, ShouldBeGreaterThan, 0)
 			So(user.Profile.Upat, ShouldBeZeroValue)
 			So(user.Profile.Dlat, ShouldBeZeroValue)
 
 			Convey("User Profile Address", func() {
+				user.Profile.Address = []Address{address, oaddress}
+				err := user.Update()
+				So(err, ShouldBeNil)
 				So(user.Profile.Id, ShouldEqual, user.Profile.Address[0].ProfileId)
 				So(user.Profile.Address[0].Crat, ShouldBeGreaterThan, 0)
 				So(user.Profile.Address[0].Upat, ShouldBeZeroValue)
 				So(user.Profile.Address[0].Dlat, ShouldBeZeroValue)
-			})
 
-			Convey("User Profile Office", func() {
-				So(user.Profile.Id, ShouldEqual, user.Profile.Office[0].ProfileId)
-				So(user.Profile.Office[0].Crat, ShouldBeGreaterThan, 0)
-				So(user.Profile.Office[0].Upat, ShouldBeZeroValue)
-				So(user.Profile.Office[0].Dlat, ShouldBeZeroValue)
-			})
+				Convey("User Profile Office", func() {
+					user.Profile.Office = []Office{office}
+					err := user.Update()
+					So(err, ShouldBeNil)
+					So(user.Profile.Id, ShouldEqual, user.Profile.Office[0].ProfileId)
+					So(user.Profile.Office[0].Crat, ShouldBeGreaterThan, 0)
+					So(user.Profile.Office[0].Upat, ShouldBeZeroValue)
+					So(user.Profile.Office[0].Dlat, ShouldBeZeroValue)
 
-			Convey("User Profile Email", func() {
-				So(user.Profile.Id, ShouldEqual, user.Profile.Email[0].ProfileId)
-				So(user.Profile.Email[0].Crat, ShouldBeGreaterThan, 0)
-				So(user.Profile.Email[0].Upat, ShouldBeZeroValue)
-				So(user.Profile.Email[0].Dlat, ShouldBeZeroValue)
-			})
+					Convey("User Profile Email", func() {
+						user.Profile.Email = []Email{email}
+						err := user.Update()
+						So(err, ShouldBeNil)
+						So(user.Profile.Id, ShouldEqual, user.Profile.Email[0].ProfileId)
+						So(user.Profile.Email[0].Crat, ShouldBeGreaterThan, 0)
+						So(user.Profile.Email[0].Upat, ShouldBeZeroValue)
+						So(user.Profile.Email[0].Dlat, ShouldBeZeroValue)
 
-			Convey("User Profile Phone", func() {
-				So(user.Profile.Id, ShouldEqual, user.Profile.Phone[0].ProfileId)
-				So(user.Profile.Phone[0].Crat, ShouldBeGreaterThan, 0)
-				So(user.Profile.Phone[0].Upat, ShouldBeZeroValue)
-				So(user.Profile.Phone[0].Dlat, ShouldBeZeroValue)
-			})
-		})
-		Convey("Finding User", func() {
-			var UserId int64 = 1
-			user.Find(UserId)
-			So(user.Id, ShouldEqual, UserId)
-			Convey("Get User Profile", func() {
-				So(user.Profile.UserId, ShouldEqual, UserId)
-
-				Convey("Get User Profile Address", func() {
-					So(user.Profile.Address[0].ProfileId, ShouldEqual, user.Profile.Id)
+						Convey("User Profile Phone", func() {
+							user.Profile.Phone = []Phone{phone}
+							err := user.Update()
+							So(err, ShouldBeNil)
+							So(user.Profile.Id, ShouldEqual, user.Profile.Phone[0].ProfileId)
+							So(user.Profile.Phone[0].Crat, ShouldBeGreaterThan, 0)
+							So(user.Profile.Phone[0].Upat, ShouldBeZeroValue)
+							So(user.Profile.Phone[0].Dlat, ShouldBeZeroValue)
+						})
+					})
 				})
-
-				Convey("Get User Profile Office", func() {
-					So(user.Profile.Office[0].ProfileId, ShouldEqual, user.Profile.Id)
-				})
-
-				Convey("Get User Profile Email", func() {
-					So(user.Profile.Email[0].ProfileId, ShouldEqual, user.Profile.Id)
-				})
-
-				Convey("Get User Profile Phone", func() {
-					So(user.Profile.Phone[0].ProfileId, ShouldEqual, user.Profile.Id)
-				})
-
 			})
-		})
-
-		Convey("Find All User", func() {
-			users, _ := user.FindAll()
-			So(len(users), ShouldBeGreaterThan, 0)
-		})
-
-		Convey("Updating User", func() {
 
 		})
 
-		Convey("Deleting User", func() {
+	})
+
+	Convey("Finding User", t, func() {
+		var user User
+		var UserId int64 = 1
+		user.Find(UserId)
+		So(user.Id, ShouldEqual, UserId)
+		Convey("Get User Profile", func() {
+			So(user.Profile.UserId, ShouldEqual, UserId)
+
+			Convey("Get User Profile Address", func() {
+				So(user.Profile.Address[0].ProfileId, ShouldEqual, user.Profile.Id)
+			})
+
+			Convey("Get User Profile Office", func() {
+				So(user.Profile.Office[0].ProfileId, ShouldEqual, user.Profile.Id)
+			})
+
+			Convey("Get User Profile Email", func() {
+				So(user.Profile.Email[0].ProfileId, ShouldEqual, user.Profile.Id)
+			})
+
+			Convey("Get User Profile Phone", func() {
+				So(user.Profile.Phone[0].ProfileId, ShouldEqual, user.Profile.Id)
+			})
 
 		})
+	})
 
-		Convey("Restoring User", func() {
+	Convey("Find All User", t, func() {
+		var user User
+		users, _ := user.FindAll()
+		So(len(users), ShouldBeGreaterThan, 0)
+	})
 
-		})
+	Convey("Updating User", t, func() {
+
+	})
+
+	Convey("Deleting User", t, func() {
+
+	})
+
+	Convey("Restoring User", t, func() {
+
 	})
 
 }

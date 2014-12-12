@@ -33,6 +33,16 @@ func (user *User) Create() error {
 	return nil
 }
 
+//Create User
+func (user *User) Update() error {
+	err := Mdb.db.Save(user)
+	if err.Error != nil {
+		Helpers.BaseLog("DATABASE", "ERROR", "", "DUPLICATE", 1062, 3, err.Error)
+		return err.Error
+	}
+	return nil
+}
+
 //Find UserById
 func (user *User) Find(Id int64) (*User, error) {
 	err := Mdb.db.Select("id, username").First(user, Id)
