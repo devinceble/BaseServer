@@ -58,7 +58,7 @@ func Test_UserModel(t *testing.T) {
 		user.Username = "devinceble"
 		user.Password = "qwerty"
 		user.Profile = profile
-		user.Profile.Address = []Address{address, oaddress}
+		user.Profile.Address = []Address{address}
 		user.Profile.Office = []Office{office}
 		user.Profile.Email = []Email{email}
 		user.Profile.Phone = []Phone{phone}
