@@ -1,6 +1,6 @@
 #BaseServerStruct
 
-Version: *** v0.0.1b ***
+Version: *** v0.0.2 ***
 
 Base Server Structure for Client Web Applications
 
@@ -8,6 +8,11 @@ My personal Starter Kit for Building Client Server for Web Application and Phase
 
 --------
 ###Change Log
+
+*** v0.0.2 ***
+
+  * Fixed Convey
+
 *** v0.0.1b Beta Release ***
 
   * Routes
