@@ -1,10 +1,10 @@
 package TestsModels
 
 import (
-	"testing"
 	. "github.com/devinceble/BaseServer/Models"
 	_ "github.com/go-sql-driver/mysql"
 	. "github.com/smartystreets/goconvey/convey"
+	"testing"
 )
 
 func Test_UserModel(t *testing.T) {
@@ -61,9 +61,6 @@ func Test_UserModel(t *testing.T) {
 		user2.Profile.Email = []Email{email2}
 		user2.Profile.Phone = []Phone{phone2}
 
-		err1 := user2.Create()
-		So(err1, ShouldBeNil)
-
 		profile.FirstName = "Leivince John"
 		profile.LastName = "Marte"
 		profile.MiddleName = "Diez"
@@ -105,6 +102,9 @@ func Test_UserModel(t *testing.T) {
 
 		err := user.Create()
 		So(err, ShouldBeNil)
+		err1 := user2.Create()
+		So(err1, ShouldBeNil)
+
 		So(user.Upat, ShouldBeZeroValue)
 		So(user.Dlat, ShouldBeZeroValue)
 
@@ -142,51 +142,50 @@ func Test_UserModel(t *testing.T) {
 				So(user.Profile.Phone[0].Dlat, ShouldBeZeroValue)
 			})
 		})
-	})
+		Convey("Finding User", func() {
+			var user User
+			var UserId int64 = 2
+			user.Find(UserId)
+			So(user.Id, ShouldEqual, UserId)
+			Convey("Get User Profile", func() {
+				So(user.Profile.UserId, ShouldEqual, UserId)
 
-	Convey("Finding User", t, func() {
-		var user User
-		var UserId int64 = 2
-		user.Find(UserId)
-		So(user.Id, ShouldEqual, UserId)
-		Convey("Get User Profile", func() {
-			So(user.Profile.UserId, ShouldEqual, UserId)
+				Convey("Get User Profile Address", func() {
+					So(user.Profile.Address[0].ProfileId, ShouldEqual, user.Profile.Id)
+				})
 
-			Convey("Get User Profile Address", func() {
-				So(user.Profile.Address[0].ProfileId, ShouldEqual, user.Profile.Id)
+				Convey("Get User Profile Office", func() {
+					So(user.Profile.Office[0].ProfileId, ShouldEqual, user.Profile.Id)
+				})
+
+				Convey("Get User Profile Email", func() {
+					So(user.Profile.Email[0].ProfileId, ShouldEqual, user.Profile.Id)
+				})
+
+				Convey("Get User Profile Phone", func() {
+					So(user.Profile.Phone[0].ProfileId, ShouldEqual, user.Profile.Id)
+				})
+
 			})
+		})
 
-			Convey("Get User Profile Office", func() {
-				So(user.Profile.Office[0].ProfileId, ShouldEqual, user.Profile.Id)
-			})
+		Convey("Find All User", func() {
+			var user User
+			users, _ := user.FindAll()
+			So(len(users), ShouldBeGreaterThan, 0)
+		})
 
-			Convey("Get User Profile Email", func() {
-				So(user.Profile.Email[0].ProfileId, ShouldEqual, user.Profile.Id)
-			})
-
-			Convey("Get User Profile Phone", func() {
-				So(user.Profile.Phone[0].ProfileId, ShouldEqual, user.Profile.Id)
-			})
+		Convey("Updating User", func() {
 
 		})
-	})
 
-	Convey("Find All User", t, func() {
-		var user User
-		users, _ := user.FindAll()
-		So(len(users), ShouldBeGreaterThan, 0)
-	})
+		Convey("Deleting User", func() {
 
-	Convey("Updating User", t, func() {
+		})
 
-	})
+		Convey("Restoring User", func() {
 
-	Convey("Deleting User", t, func() {
-
-	})
-
-	Convey("Restoring User", t, func() {
-
+		})
 	})
 
 }
